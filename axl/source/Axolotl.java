@@ -4,13 +4,10 @@ import axl.source.lexer.Lexer;
 import axl.source.lexer.Token;
 import axl.source.lexer.TokenType;
 
-import javax.print.DocFlavor;
-
 public class Axolotl {
     static String code =
             """
-            package axl.source;
-            public class Axolotl {
+            class Axolotl {
                 int x = 21;
                 println(x);
             }
@@ -30,7 +27,7 @@ public class Axolotl {
             else if (token.type == TokenType.FLOAT)
                 System.out.println(lexer.tokens.get(i).value_float);
             else
-                System.out.println("");
+                System.out.println();
         }
     }
 }
