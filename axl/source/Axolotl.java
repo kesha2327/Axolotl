@@ -16,8 +16,7 @@ public class Axolotl {
     public static void main(String[] args) {
         Lexer lexer = new Lexer(code);
         lexer.gen_tokens();
-        for(int i = 0; i < lexer.tokens.size(); i++){
-            Token token = lexer.tokens.get(i);
+        for(Token token: lexer){
             System.out.print(token.type+" ");
 
             if(token.type == TokenType.STRING || token.type == TokenType.WORD)
