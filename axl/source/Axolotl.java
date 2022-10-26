@@ -16,15 +16,15 @@ public class Axolotl {
     public static void main(String[] args) {
         Lexer lexer = new Lexer(code);
         lexer.gen_tokens();
-        for(Token token: lexer){
+        for(Token token: lexer.tokens){
             System.out.print(token.type+" ");
 
             if(token.type == TokenType.STRING || token.type == TokenType.WORD)
-                System.out.println(lexer.tokens.get(i).value_string);
+                System.out.println(token.value_string);
             else if (token.type == TokenType.INTEGER)
-                System.out.println(lexer.tokens.get(i).value_integer);
+                System.out.println(token.value_integer);
             else if (token.type == TokenType.FLOAT)
-                System.out.println(lexer.tokens.get(i).value_float);
+                System.out.println(token.value_float);
             else
                 System.out.println();
         }

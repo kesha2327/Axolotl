@@ -6,7 +6,7 @@ import static java.lang.System.exit;
 
 public class Lexer
 {
-    private final String content;
+    private final String CONTENT;
     private int i = 0;
     private char current = 0;
 
@@ -14,15 +14,15 @@ public class Lexer
 
     public Lexer(String content)
     {
-        this.content = content;
+        this.CONTENT = content;
     }
 
     private void next()
     {
-        if(i < content.length()-1)
-            current = content.charAt(++i);
+        if(i < CONTENT.length()-1)
+            current = CONTENT.charAt(++i);
         else {
-            i = content.length();
+            i = CONTENT.length();
             current = '\0';
         }
     }
@@ -30,7 +30,7 @@ public class Lexer
     private void last()
     {
         if(i > 0)
-            current = content.charAt(--i);
+            current = CONTENT.charAt(--i);
     }
 
     private void skip()
@@ -50,13 +50,12 @@ public class Lexer
         {
             str.append(current);
             next();
-            if(i == content.length()) exit(2);
+            if(i == CONTENT.length()) exit(2);
         }
 
         next();
 
-        String value = str.toString();
-        tokens.add(new Token(TokenType.STRING, value, 0, 0));
+        tokens.add(new Token(TokenType.STRING, str.toString(), 0, 0));
     }
 
     private void token_number()
@@ -95,15 +94,16 @@ public class Lexer
             next();
         }
 
-        String value = str.toString();
+
+        float value = Float.parseFloat(str.toString());
         Token token;
         if(type == TokenType.FLOAT)
         {
-            token = new Token(type, "", 0, Float.parseFloat(value));
+            token = new Token(type, "", 0, value);
         }
         else
         {
-            token = new Token(type, "", Integer.parseInt(value), 0);
+            token = new Token(type, "", (int) value, 0);
         }
 
         tokens.add(token);
@@ -119,8 +119,7 @@ public class Lexer
             next();
         }
 
-        String value = str.toString();
-        tokens.add(new Token(TokenType.WORD, value, 0, 0));
+        tokens.add(new Token(TokenType.WORD, str.toString(), 0, 0));
     }
 
     private void token_op()
@@ -145,8 +144,8 @@ public class Lexer
 
     public void gen_tokens()
     {
-        current = content.charAt(i);
-        while (i < content.length()-1) {
+        current = CONTENT.charAt(i);
+        while (i < CONTENT.length()-1) {
             if (current == ' ' || current == '\n' || current == '\t' || current == '\r')
                 skip();
 

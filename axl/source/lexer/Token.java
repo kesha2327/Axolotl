@@ -8,12 +8,12 @@ public class Token
     public int     value_integer;    // num
     public float   value_float;  // num
 
-    Token(TokenType t, String value_s, int value_i, float value_f)
+    Token(TokenType type, String value_string, int value_integer, float value_float)
     {
-        type = t;
-        value_string = value_s;
-        value_integer = value_i;
-        value_float = value_f;
+        this.type = type;
+        this.value_string = value_string;
+        this.value_integer = value_integer;
+        this.value_float = value_float;
     }
 }
 
