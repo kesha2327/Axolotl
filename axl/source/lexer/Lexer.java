@@ -136,6 +136,7 @@ public class Lexer
             case '*' -> TokenType.STAR;
             case '/' -> TokenType.SLASH;
             case '.' -> TokenType.DOT;
+            case ',' -> TokenType.COMMA;
             case '=' -> TokenType.EQUAL;
             default -> TokenType.UNDEFINED;
         };
