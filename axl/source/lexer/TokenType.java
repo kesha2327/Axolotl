@@ -16,6 +16,8 @@ public enum TokenType {
     STAR,
     SLASH,
     DOT,      // .
+    COMMA,    // ,
     EQUAL,    // =
-    UNDEFINED
+    UNDEFINED,
+    ENDFILE
 }
