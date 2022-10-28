@@ -1,6 +1,6 @@
 package axl.source.ast;
 
-public class AstFunctionDefinition {
+public class AstFunctionDefinition extends Ast{
     public String name;
     public DataType type;
     public AstCompound BODY;

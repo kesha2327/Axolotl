@@ -65,6 +65,16 @@ public class Token
     {
         return type == TokenType.ENDFILE;
     }
+
+    public boolean is_semi()
+    {
+        return type == TokenType.SEMI;
+    }
+
+    public boolean is_dot()
+    {
+        return type == TokenType.DOT;
+    }
 }
 
 

@@ -168,5 +168,7 @@ public class Lexer
 
             token_op();
         }
+
+        tokens.add(new Token(TokenType.ENDFILE, "", 0, 0));
     }
 }
