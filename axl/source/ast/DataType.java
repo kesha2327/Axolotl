@@ -5,6 +5,7 @@ public enum DataType {
     FlOAT,
     CHAR,
     BOOL,
+    DOUBLE,
     STRING,
     VOID
 }

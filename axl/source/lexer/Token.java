@@ -1,5 +1,9 @@
 package axl.source.lexer;
 
+import axl.source.ast.DataType;
+
+import javax.swing.text.html.parser.Parser;
+
 public class Token
 {
     public TokenType type;
@@ -8,17 +12,24 @@ public class Token
     public int     value_integer;    // num
     public float   value_float;  // num
 
-    public Token(TokenType t, String value_s, int value_i, float value_f)
+    public Token(TokenType type, String value_string, int value_integer, float value_float)
     {
-        type = t;
-        value_string = value_s;
-        value_integer = value_i;
-        value_float = value_f;
+        this.type = type;
+        this.value_string = value_string;
+        this.value_integer = value_integer;
+        this.value_float = value_float;
     }
 
     public boolean is_word()
     {
         return type == TokenType.WORD;
+    }
+
+    public boolean is_data(){
+        return switch (type) {
+            case INTEGER, STRING, FLOAT -> true;
+            default -> false;
+        };
     }
 
     public boolean is_integer()
@@ -29,6 +40,13 @@ public class Token
     public boolean is_float()
     {
         return type == TokenType.FLOAT;
+    }
+
+    public boolean isModifier(){
+        return switch (value_string) {
+            case "public", "private", "default", "protected", "static" -> true;
+            default -> false;
+        };
     }
 
     public boolean is_op()
