@@ -13,10 +13,12 @@ public class Axolotl {
             """;
 
     public static void main(String[] args) {
-        Lexer lexer = new Lexer(code);
+        Lexer lexer = new Lexer(code); //1 - 2 exit
         lexer.gen_tokens();
 
-        Parser parser = new Parser(lexer.tokens);
+        Parser parser = new Parser(lexer.tokens); //3 - 16 exit
         parser.parse_file();
+
+        //total number of exit methods: 16
     }
 }
