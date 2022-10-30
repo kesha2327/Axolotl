@@ -42,11 +42,28 @@ public class Token
         return type == TokenType.FLOAT;
     }
 
-    public boolean isModifier(){
+    public boolean is_access(){
         return switch (value_string) {
-            case "public", "private", "default", "protected", "static" -> true;
+            case "public", "private", "default", "protected" -> true;
             default -> false;
         };
+    }
+
+    public byte get_access() {
+        return switch (value_string) {
+            case "public"    -> 1;
+            case "private"   -> 2;
+            case "protected" -> 3;
+            default -> 0;
+        };
+    }
+
+    public boolean is_static(){
+        return value_string.equals("static");
+    }
+
+    public boolean is_final(){
+        return value_string.equals("final");
     }
 
     public boolean is_op()

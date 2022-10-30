@@ -6,7 +6,7 @@ import axl.source.lexer.Lexer;
 public class Axolotl {
     static String code =
             """
-            class Axolotl {
+            public class Axolotl {
                 int x = 21;
                 println(x);
             }
@@ -19,6 +19,6 @@ public class Axolotl {
         Parser parser = new Parser(lexer.tokens); //3 - 16 exit
         parser.parse_file();
 
-        //total number of exit methods: 16
+        //total number of exit methods: 21
     }
 }

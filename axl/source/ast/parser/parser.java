@@ -8,6 +8,7 @@ import axl.source.lexer.TokenType;
 import java.util.ArrayList;
 
 import static java.lang.System.exit;
+import static java.lang.System.out;
 
 public class Parser {
 
@@ -18,7 +19,6 @@ public class Parser {
     IMPLEMENTS    = "implements",
     VOID          = "void",
     INT           = "int",
-    INTEGER       = "Integer",
     FLOAT         = "float",
     DOUBLE        = "double",
     CHAR          = "char",
@@ -80,7 +80,15 @@ public class Parser {
 
     private boolean is_reserved(String word){
         return switch (word) {
-            case CLASS, VOID, INT, FLOAT, TRUE, FALSE, DOUBLE, LONG, BYTE, CHAR, INTEGER -> true;
+            case CLASS, VOID, INT, FLOAT, TRUE, FALSE, DOUBLE, LONG, BYTE, CHAR, SHORT, BOOLEAN, STRING, STATIC, PUBLIC, PRIVATE, PROTECTED, DEFAULT, SYNCHRONIZED -> true;
+            default -> false;
+        };
+    }
+
+    private boolean is_data(String word)
+    {
+        return switch (word) {
+            case INT, FLOAT, SHORT, BYTE, DOUBLE, LONG, BOOLEAN, VOID, CHAR -> true;
             default -> false;
         };
     }
@@ -97,6 +105,24 @@ public class Parser {
                     parse_dir();
                     break;
                 }
+                if(current.is_access() || current.is_static() || current.is_final())
+                {
+                    int temp_i = i;
+
+                    do next();
+                    while ((current.is_access() || current.is_static() || current.is_final()) && !current.is_endfile());
+
+                    if(current.is_endfile() || !current.value_string.equals(CLASS))
+                    {
+                        exit(20);
+                        return null;
+                    }
+                    last(i-temp_i-1);
+                    i = temp_i-1;
+                    current = tokens.get(i++);
+                    file.body.add(parse_class());
+                }
+
                 if(current.value_string.equals(CLASS))
                     file.body.add(parse_class());
             }
@@ -146,22 +172,59 @@ public class Parser {
             exit(6);
             return null; //чтобы IDE не материла
         }
-        String name = current.value_string;
-        AstClassDefinition ast_class = new AstClassDefinition(new ArrayList<String>(), name, this._dir_, new AstCompound());
+        AstClassDefinition ast_class = new AstClassDefinition(null, this._dir_, new AstCompound());
 
-        if(tokens.get(i - 2).isModifier()){ //проверка, какой токен был перед class (модификатор или нет)
-            ast_class.modifiers.add(tokens.get(i - 2).value_string); //если да, то добавляю модификатор в список модификаторов для этого класса
+        { // Для памяти
+            boolean modifier = false;
+            while (current.is_access() || current.is_static() || current.is_final()) {
+                if (current.is_final()) {
+                    if (!ast_class.is_final) {
+                        ast_class.is_final = true;
+                    } else {
+                        exit(17);
+                        return null;
+                    }
+                } else if (current.is_static()) {
+                    if (!ast_class.is_static) {
+                        ast_class.is_static = true;
+                    } else {
+                        exit(18);
+                        return null;
+                    }
+                } else if (current.is_access()) {
+                    if (!modifier) {
+                        ast_class.modifier_access = current.get_access();
+                        modifier = true;
+                    } else {
+                        exit(19);
+                        return null;
+                    }
+                }
+
+                next();
+            }
+        }
+        next(); // skip "class"
+
+        if(!current.is_word())
+        {
+            exit(21);
+            return null; //чтобы IDE не материла
         }
 
+        ast_class.name = current.value_string;
 
         next();
 
-        if(!current.is_word())
+        if(current.is_word())
         {
             exit(7);
             return null; //чтобы IDE не материла
         }
-
+        out.println("access: "+ast_class.modifier_access);
+        out.println("static: "+ast_class.is_static);
+        out.println("final: "+ast_class.is_final);
+        exit(666);
         while(!current.is_lbrace() && !current.is_endfile()) {
             next();
             if (current.is_word()) {
@@ -288,27 +351,26 @@ public class Parser {
 
         AstVarDefinition ast_var = new AstVarDefinition(new ArrayList<String>(), current.value_string, DataType.BOOL, new AstCompound());
 
-        while(!current.is_semi()){
-            if(current.isModifier()){
-                ast_var.modifiers.add(current.value_string);
-            }
-
-            if(current.is_data()){
-                //ast_var.type = current.type; //тип данных
-                ast_var.name = tokens.get(++i).value_string; //имя переменной
-            }
-
-
-            next();
-        }
+//        while(!current.is_semi()){
+//            if(current.isModifier()){
+//                ast_var.modifiers.add(current.value_string);
+//            }
+//
+//            if(current.is_data()){
+////                ast_var.type = current.type; //тип данных
+//                ast_var.name = tokens.get(++i).value_string; //имя переменной
+//            }
+//
+//
+//            next();
+//        }
 
         return null;
 
     }
 
-    //private void isData(){};
-
     private AstFunctionCall parse_function_signature(){
         AstFunctionCall function_signature = new AstFunctionCall(new ArrayList<String>(), current.value_string, new AstCompound());
+        return null;
     }
 }
