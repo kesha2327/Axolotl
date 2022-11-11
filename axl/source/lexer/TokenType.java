@@ -5,6 +5,7 @@ public enum TokenType {
     STRING,
     INTEGER,
     FLOAT,
+    CHAR,
 
     LPAR,     // (
     RPAR,     // )

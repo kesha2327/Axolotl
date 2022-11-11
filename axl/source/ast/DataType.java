@@ -2,10 +2,13 @@ package axl.source.ast;
 
 public enum DataType {
     INT,
-    FlOAT,
-    CHAR,
-    BOOL,
+    FLOAT,
+    SHORT,
+    BYTE,
     DOUBLE,
-    STRING,
-    VOID
+    LONG,
+    BOOLEAN,
+    VOID,
+    CHAR,
+    OBJECT
 }

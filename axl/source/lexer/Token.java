@@ -11,13 +11,35 @@ public class Token
     public String  value_string; // string || word
     public int     value_integer;    // num
     public float   value_float;  // num
+    public char    value_char;
 
-    public Token(TokenType type, String value_string, int value_integer, float value_float)
+    public Token(TokenType type, String value_string)
     {
         this.type = type;
         this.value_string = value_string;
-        this.value_integer = value_integer;
+    }
+
+    public Token(TokenType type)
+    {
+        this.type = type;
+    }
+
+    public Token(float value_float)
+    {
+        this.type = TokenType.FLOAT;
         this.value_float = value_float;
+    }
+
+    public Token(int value_integer)
+    {
+        this.type = TokenType.INTEGER;
+        this.value_integer = value_integer;
+    }
+
+    public Token(char c)
+    {
+        this.type = TokenType.CHAR;
+        this.value_char = c;
     }
 
     public boolean is_word()
@@ -66,11 +88,6 @@ public class Token
         return value_string.equals("final");
     }
 
-    public boolean is_op()
-    {
-        return !(type == TokenType.WORD || type == TokenType.INTEGER || type == TokenType.FLOAT);
-    }
-
     public boolean is_comma()
     {
         return type == TokenType.COMMA;
@@ -109,6 +126,31 @@ public class Token
     public boolean is_dot()
     {
         return type == TokenType.DOT;
+    }
+
+    public boolean is_equal()
+    {
+        return type == TokenType.EQUAL;
+    }
+
+    public boolean is_plus()
+    {
+        return type == TokenType.PLUS;
+    }
+
+    public boolean is_minus()
+    {
+        return type == TokenType.MINUS;
+    }
+
+    public boolean is_star()
+    {
+        return type == TokenType.STAR;
+    }
+
+    public boolean is_slash()
+    {
+        return type == TokenType.SLASH;
     }
 }
 

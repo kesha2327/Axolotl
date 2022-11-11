@@ -1,22 +1,22 @@
 package axl.source.ast;
 
-import axl.source.ast.values.AstString;
-
-import java.util.ArrayList;
+import static java.lang.System.exit;
 
 public class AstVarDefinition extends Ast{
 
-    public ArrayList<String> modifiers = new ArrayList<>();
+    public AstModifiers modifiers;
     public String name;
-    public DataType type;
-    public AstCompound value;
+    public AstDataType type;
+    public Ast value = null;
 
-    public AstVarDefinition(ArrayList<String> modifiers, String name, DataType type, AstCompound value)
+    public AstVarDefinition(AstModifiers modifiers, String name, AstDataType type)
     {
+        if(type.type == DataType.VOID)
+            exit(3593);
+
         this.modifiers = modifiers;
         this.name = name;
         this.type = type;
-        this.value = value;
     }
 
     boolean isVarDefinition(){

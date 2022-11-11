@@ -41,12 +41,11 @@ public class Lexer
 
     private void token_string()
     {
-        char end = current;
         next();
 
         StringBuilder str = new StringBuilder();
 
-        while(current != end)
+        while(current != '"')
         {
             str.append(current);
             next();
@@ -55,7 +54,17 @@ public class Lexer
 
         next();
 
-        tokens.add(new Token(TokenType.STRING, str.toString(), 0, 0));
+        tokens.add(new Token(TokenType.STRING, str.toString()));
+    }
+
+    private void token_char()
+    {
+        next();
+        tokens.add(new Token(current));
+        next();
+
+        if(current != '\'')
+            exit(1);
     }
 
     private void token_number()
@@ -98,11 +107,11 @@ public class Lexer
         Token token;
         if(type == TokenType.FLOAT)
         {
-            token = new Token(type, "", 0, value);
+            token = new Token(value);
         }
         else
         {
-            token = new Token(type, "", (int) value, 0);
+            token = new Token((int)value);
         }
 
         tokens.add(token);
@@ -118,7 +127,7 @@ public class Lexer
             next();
         }
 
-        tokens.add(new Token(TokenType.WORD, str.toString(), 0, 0));
+        tokens.add(new Token(TokenType.WORD, str.toString()));
     }
 
     private void token_op()
@@ -139,7 +148,7 @@ public class Lexer
             default -> TokenType.UNDEFINED;
         };
         next();
-        tokens.add(new Token(type, "", 0, 0));
+        tokens.add(new Token(type));
     }
 
     public void gen_tokens()
@@ -149,8 +158,13 @@ public class Lexer
             if (current == ' ' || current == '\n' || current == '\t' || current == '\r')
                 skip();
 
-            if (current == '"' || current == '\'') {
+            if (current == '"') {
                 token_string();
+                continue;
+            }
+
+            if (current == '\'') {
+                token_char();
                 continue;
             }
 
@@ -167,6 +181,6 @@ public class Lexer
             token_op();
         }
 
-        tokens.add(new Token(TokenType.ENDFILE, "", 0, 0));
+        tokens.add(new Token(TokenType.ENDFILE));
     }
 }

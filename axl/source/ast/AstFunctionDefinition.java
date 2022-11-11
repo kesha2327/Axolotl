@@ -2,12 +2,15 @@ package axl.source.ast;
 
 public class AstFunctionDefinition extends Ast{
     public String name;
-    public DataType type;
+    public AstModifiers modifiers;
+    public AstDataType type;
     public AstCompound BODY;
 
-    AstFunctionDefinition(String name)
+    public AstFunctionDefinition(AstModifiers modifiers, String name, AstDataType type)
     {
+        this.modifiers = modifiers;
         this.name = name;
+        this.type = type;
     }
 
     boolean isFunctionDefinition(){
